@@ -1,0 +1,59 @@
+{
+  "name": "Activité 5 — Agent SAV MCP",
+  "active": false,
+  "settings": {"executionOrder": "v1"},
+  "nodes": [
+    {
+      "id": "11bf3120-ea6b-4020-8674-4da8f292226a",
+      "name": "Message reçu",
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.1,
+      "position": [0, 0],
+      "parameters": {"options": {}},
+      "webhookId": "dbb19a60-cf51-4fc3-8376-b2959ec04bc2"
+    },
+    {
+      "id": "440ab1e4-4948-4803-b68c-c7ea9d3412c8",
+      "name": "Agent SAV",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [280, 0],
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.chatInput }}",
+        "options": {
+          "systemMessage": "Tu es l’agent documentaire du SAV fictif PX-200. Pour une question sur le manuel, appelle rag_multimodal via MCP, en passant image_ref si elle est fournie. Réponds en français, cite les ID et les pages et indique si les preuves sont insuffisantes.",
+          "maxIterations": 4,
+          "returnIntermediateSteps": true
+        }
+      }
+    },
+    {
+      "id": "42c060d4-58d9-4f4b-9ad9-40a65015edd2",
+      "name": "Modèle Ollama",
+      "type": "@n8n/n8n-nodes-langchain.lmChatOllama",
+      "typeVersion": 1,
+      "position": [210, 220],
+      "parameters": {"model": "llama3.2:3b", "options": {"temperature": 0}}
+    },
+    {
+      "id": "fae51774-308c-488d-88ad-00db11b6424c",
+      "name": "MCP Client",
+      "type": "@n8n/n8n-nodes-langchain.mcpClientTool",
+      "typeVersion": 1.2,
+      "position": [440, 220],
+      "parameters": {
+        "serverTransport": "httpStreamable",
+        "endpointUrl": "http://127.0.0.1:8005/mcp",
+        "authentication": "none",
+        "include": "all",
+        "options": {"timeout": 15000}
+      }
+    }
+  ],
+  "connections": {
+    "Message reçu": {"main": [[{"node": "Agent SAV", "type": "main", "index": 0}]]},
+    "Modèle Ollama": {"ai_languageModel": [[{"node": "Agent SAV", "type": "ai_languageModel", "index": 0}]]},
+    "MCP Client": {"ai_tool": [[{"node": "Agent SAV", "type": "ai_tool", "index": 0}]]}
+  }
+}

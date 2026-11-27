@@ -1,0 +1,9 @@
+{
+  "dependencies": ["."],
+  "graphs": {
+    "bases": "./sav/studio.py:bases",
+    "rag": "./sav/studio.py:rag",
+    "agentique": "./sav/studio.py:agentique",
+    "sav": "./sav/orchestrateur.py:sav_graph"
+  }
+}

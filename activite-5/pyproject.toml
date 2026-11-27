@@ -1,0 +1,13 @@
+[project]
+name = "activite-5-agents-sav"
+version = "0.1.0"
+requires-python = ">=3.11,<3.12"
+dependencies = [
+  "langchain>=1,<2", "langgraph>=1,<2", "langchain-ollama>=1,<2",
+  "langchain-mcp-adapters>=0.1,<1", "mcp>=1.20,<2",
+  "streamlit>=1.45,<2", "pillow", "numpy", "scikit-learn", "ipykernel", "httpx",
+  "langchain-community", "langchain-tavily", "ddgs", "langchain-experimental"
+]
+
+[dependency-groups]
+studio = ["langgraph-cli[inmem]"]
