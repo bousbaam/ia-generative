@@ -1,0 +1,6 @@
+torch
+numpy
+pandas
+matplotlib
+transformers>=4.50,<6
+ipykernel
